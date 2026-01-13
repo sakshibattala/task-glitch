@@ -16,3 +16,25 @@ tasks are loaded only once during initial mount.
 `Fix duplicate task fetch by removing redundant useEffect`
 
 ---
+
+### Bug 2: Undo Snackbar Restores Old Tasks
+
+**Problem:**
+The undo feature relied on a `lastDeleted` state. When the snackbar auto-closed
+or was manually dismissed, this state was not cleared. As a result, clicking
+Undo after a later delete could restore an older, already-deleted task
+(phantom data).
+
+**Expected Behavior:**
+A deleted task should only be recoverable while the undo snackbar is visible.
+Once the snackbar closes, the deleted task should be forgotten.
+
+**Fix:**
+Added an explicit cleanup function in the `useTasks` hook to clear the
+`lastDeleted` state. This function is called when the snackbar closes,
+regardless of whether it closes due to timeout or user action.
+
+This ensures undo is only possible during the active snackbar window.
+
+**Commit:**
+`Fix undo snackbar by clearing lastDeleted state on close`
