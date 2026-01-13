@@ -1,6 +1,6 @@
 # TaskGlitch – Bug Fix Assignment
 
-## 🐞 Bugs Identified & Fixes
+## Bugs Identified & Fixes
 
 ### Bug 1: Duplicate Tasks on Load
 
@@ -38,3 +38,15 @@ This ensures undo is only possible during the active snackbar window.
 
 **Commit:**
 `Fix undo snackbar by clearing lastDeleted state on close`
+
+---
+
+### Bug 3: Unstable Sorting for Tasks with Equal ROI and Priority
+
+**Problem:**
+Tasks with identical ROI and priority were sorted using a random fallback,
+causing the list order to change on each re-render.
+
+**Fix:**
+Added a deterministic alphabetical title tie-breaker to ensure stable and
+consistent ordering across renders.
