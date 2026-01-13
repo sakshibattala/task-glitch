@@ -113,7 +113,9 @@ export default function TaskTable({ tasks, onAdd, onUpdate, onDelete }: Props) {
                     </Stack>
                   </TableCell>
                   <TableCell align="right">
-                    ${t.revenue.toLocaleString()}
+                    {Number.isFinite(t.revenue)
+                      ? `$${t.revenue.toLocaleString()}`
+                      : "—"}
                   </TableCell>
                   <TableCell align="right">{t.timeTaken}</TableCell>
                   <TableCell align="right">

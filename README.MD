@@ -74,3 +74,4 @@ or inputs were invalid.
 **Fix:**
 Added input validation to safely handle zero and invalid values, returning `null`
 instead of allowing invalid calculations. ROI formatting is handled in the UI.
+Also ensured invalid revenue values no longer render as `$NaN` in the UI.
