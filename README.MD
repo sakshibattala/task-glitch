@@ -62,3 +62,15 @@ causing multiple dialogs to open simultaneously.
 **Fix:**
 Stopped event propagation in Edit and Delete button handlers to ensure only the
 intended dialog opens.
+
+---
+
+### Bug 5: ROI Calculation and Validation Errors
+
+**Problem:**
+ROI calculations produced `Infinity` or invalid values when time taken was zero
+or inputs were invalid.
+
+**Fix:**
+Added input validation to safely handle zero and invalid values, returning `null`
+instead of allowing invalid calculations. ROI formatting is handled in the UI.
