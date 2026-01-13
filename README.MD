@@ -50,3 +50,15 @@ causing the list order to change on each re-render.
 **Fix:**
 Added a deterministic alphabetical title tie-breaker to ensure stable and
 consistent ordering across renders.
+
+---
+
+### Bug 4: Double Dialog Opening on Edit/Delete
+
+**Problem:**
+Clicking Edit or Delete also triggered the row click handler due to event bubbling,
+causing multiple dialogs to open simultaneously.
+
+**Fix:**
+Stopped event propagation in Edit and Delete button handlers to ensure only the
+intended dialog opens.
