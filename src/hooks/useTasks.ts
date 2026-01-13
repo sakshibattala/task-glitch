@@ -117,6 +117,11 @@ export function useTasks(): UseTasksState {
     };
   }, []);
 
+  // BUG 1 FIX:
+  // Previously, tasks were fetched twice due to multiple useEffect hooks
+  // running on mount. This caused duplicate tasks and unpredictable state.
+  // The redundant useEffect was removed to ensure tasks are fetched only once.
+
   const derivedSorted = useMemo<DerivedTask[]>(() => {
     const withRoi = tasks.map(withDerived);
     return sortDerived(withRoi);
@@ -188,9 +193,12 @@ export function useTasks(): UseTasksState {
     setLastDeleted(null);
   }, [lastDeleted]);
 
+  // BUG 2 FIX:
+  // lastDeleted holds the recently deleted task for undo functionality.
+  // When the snackbar closes (timeout or manual close), this state must be
+  // cleared to prevent restoring an older deleted task (phantom data).
   const clearLastDeleted = useCallback(() => {
     setLastDeleted(null);
-    
   }, []);
 
   return {

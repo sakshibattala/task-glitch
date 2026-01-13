@@ -113,6 +113,9 @@ export default function TaskTable({ tasks, onAdd, onUpdate, onDelete }: Props) {
                     </Stack>
                   </TableCell>
                   <TableCell align="right">
+                    {/* BUG 5 FIX:
+ Revenue may be NaN due to invalid or malformed data.
+ Guard against invalid values to prevent displaying "$NaN" in the UI. */}
                     {Number.isFinite(t.revenue)
                       ? `$${t.revenue.toLocaleString()}`
                       : "—"}
@@ -129,6 +132,10 @@ export default function TaskTable({ tasks, onAdd, onUpdate, onDelete }: Props) {
                       spacing={1}
                       justifyContent="flex-end"
                     >
+                      {/* BUG 4 FIX:
+Clicking Edit/Delete was also triggering the row's onClick handler
+due to event bubbling, causing multiple dialogs to open.
+stopPropagation prevents the click from reaching the TableRow. */}
                       <Tooltip title="Edit">
                         <IconButton
                           onClick={(e) => {

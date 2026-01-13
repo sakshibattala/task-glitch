@@ -1,6 +1,10 @@
 import { DerivedTask, Task } from "@/types";
 
 export function computeROI(revenue: number, timeTaken: number): number | null {
+  // BUG 5 FIX:
+  // ROI calculation must be guarded against invalid inputs.
+  // If revenue or timeTaken is invalid or timeTaken is zero,
+  // return null to prevent NaN or Infinity from reaching the UI.
   if (!Number.isFinite(revenue)) return null;
   if (!Number.isFinite(timeTaken) || timeTaken <= 0) return null;
 
@@ -37,7 +41,11 @@ export function sortTasks(tasks: ReadonlyArray<DerivedTask>): DerivedTask[] {
     if (bROI !== aROI) return bROI - aROI;
     if (b.priorityWeight !== a.priorityWeight)
       return b.priorityWeight - a.priorityWeight;
-    // Use title as a deterministic tie-breaker to keep sorting stable
+    // BUG 3 FIX:
+    // Sorting by ROI and priority alone is unstable when values are equal.
+    // Previously, a random fallback caused tasks to reshuffle on every render.
+    // Adding a deterministic tie-breaker (alphabetical title) ensures
+    // stable and consistent ordering across renders.
     return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
   });
 }

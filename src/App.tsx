@@ -44,6 +44,10 @@ function AppContent() {
     clearLastDeleted,
   } = useTasksContext();
 
+  // BUG 2 FIX:
+  // This handler runs when the Undo Snackbar closes.
+  // Clearing lastDeleted here ensures undo is only possible
+  // while the snackbar is visible.
   const handleCloseUndo = useCallback(() => {
     clearLastDeleted();
   }, [clearLastDeleted]);
